@@ -3,15 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Activity } from '../models/Activity';
+import type { GetActivityDto } from '../models/GetActivityDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ActivityService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @returns Activity Success
+     * @returns GetActivityDto Success
      * @throws ApiError
      */
-    public getActivity(): CancelablePromise<Array<Activity>> {
+    public getActivity(): CancelablePromise<GetActivityDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/Activity',

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.Get;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,19 +15,20 @@ namespace api.Controllers
     [Route("[controller]")]
     public class ActivityController : ControllerBase
     {
+        private readonly IActivityService _activityService;
         private readonly DataContext _context;
 
-        public ActivityController(DataContext context)
+        public ActivityController(IActivityService activityService)
         {
-            _context = context;
+            // _context = context;
+            _activityService = activityService;
         }
 
         [HttpGet]
 
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<ActionResult<GetActivityDto>> GetActivities()
         {
-            var activities = await _context.Activities.ToListAsync();
-            return Ok(activities);
+            return Ok(await _activityService.GetActivities());
         }
 
         [HttpPut("Complete/{id}")]

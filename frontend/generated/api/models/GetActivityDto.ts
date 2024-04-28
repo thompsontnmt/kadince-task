@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Status } from './Status';
-export type Activity = {
+export type GetActivityDto = {
     id?: number;
     title?: string | null;
     description?: string | null;

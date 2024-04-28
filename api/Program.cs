@@ -1,4 +1,5 @@
 using api.Data;
+using api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,12 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<DataContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+// Register IActivityService with its implementation
+builder.Services.AddScoped<IActivityService, ActivityService>();
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(ActivityAutoMapperProfile));
 
 var app = builder.Build();
 

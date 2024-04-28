@@ -11,6 +11,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { Activity } from './models/Activity';
+export type { GetActivityDto } from './models/GetActivityDto';
 export { Status } from './models/Status';
 
 export { ActivityService } from './services/ActivityService';
