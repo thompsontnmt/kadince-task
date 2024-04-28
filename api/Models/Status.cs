@@ -2,7 +2,7 @@ namespace api.Models
 {
     public enum Status
     {
-        Pending,
-        Complete
+        Pending = 0,
+        Complete = 1,
     }
 }

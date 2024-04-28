@@ -3,6 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum Status {
-    '_0' = 0,
-    '_1' = 1,
+    Pending = 0,
+    Complete = 1,
 }

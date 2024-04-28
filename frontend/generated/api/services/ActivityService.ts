@@ -51,12 +51,12 @@ export class ActivityService {
     }
     /**
      * @param id
-     * @returns any Success
+     * @returns GetActivityDto Success
      * @throws ApiError
      */
     public putActivityComplete(
         id: number,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<GetActivityDto> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/Activity/Complete/{id}',

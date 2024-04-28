@@ -32,17 +32,9 @@ namespace api.Controllers
         }
 
         [HttpPut("Complete/{id}")]
-        public async Task<ActionResult> CompleteActivity(int id)
+        public async Task<ActionResult<GetActivityDto>> CompleteActivity(int id)
         {
-            var activity = await _context.Activities.FindAsync(id);
-            if (activity == null)
-                return NotFound("Activity not found");
-
-            activity.Status = Status.Complete;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(activity);
+           return Ok(await _activityService.CompleteActivity(id));
         }
 
         [HttpPost]
