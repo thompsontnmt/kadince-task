@@ -28,12 +28,17 @@ namespace api.Controllers
             return Ok(activities);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Activity>> GetActivity(int id)
+        [HttpPut("Complete/{id}")]
+        public async Task<ActionResult> CompleteActivity(int id)
         {
             var activity = await _context.Activities.FindAsync(id);
-            if(activity is null)
+            if (activity == null)
                 return NotFound("Activity not found");
+
+            activity.Status = Status.Complete;
+
+            await _context.SaveChangesAsync();
+
             return Ok(activity);
         }
 
