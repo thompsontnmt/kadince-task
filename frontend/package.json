@@ -15,10 +15,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "generate": "node ./generate-models.js"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
+    "openapi-typescript-codegen": "^0.29.0",
     "typescript": "5.4.5"
   }
 }
