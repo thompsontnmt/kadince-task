@@ -7,5 +7,5 @@ OpenAPI.generate({
     output: './generated/api',
     httpClient: 'axios',
     clientName: 'ApiClient',
-    request: './src/axios/requests.ts'
+    request: './request.ts'
 })

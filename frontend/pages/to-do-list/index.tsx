@@ -1,9 +1,15 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import dynamic from "next/dynamic";
+import { useActivities } from "../../src/hooks/useActivities";
 
 const ToDoList = () => {
-  return <Typography variant="body1">To Do List</Typography>;
+  const { data: activities } = useActivities();
+  return (
+    <>
+      <Typography variant="body1">To Do List</Typography>
+      <p>{JSON.stringify(activities)}</p>
+    </>
+  );
 };
 
 export default ToDoList;
