@@ -5,6 +5,7 @@
 import type { Activity } from '../models/Activity';
 import type { AddActivityDto } from '../models/AddActivityDto';
 import type { GetActivityDto } from '../models/GetActivityDto';
+import type { UpdateActivityDto } from '../models/UpdateActivityDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ActivityService {
@@ -73,8 +74,8 @@ export class ActivityService {
      * @throws ApiError
      */
     public putActivity(
-        id: string,
-        requestBody?: Activity,
+        id: number,
+        requestBody?: UpdateActivityDto,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'PUT',

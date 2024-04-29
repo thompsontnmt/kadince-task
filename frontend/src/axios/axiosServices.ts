@@ -1,12 +1,13 @@
 import { GetActivityDto } from "../../generated";
-import { AddActivityDto } from "../../generated/api";
+import { AddActivityDto, UpdateActivityDto } from "../../generated/api";
 import requests from "./requests";
 
 export const AxiosServices = {
   Activity: {
-    putActivityComplete: (id: number) =>
+    updateActivityComplete: (id: number) =>
       requests.put<GetActivityDto>(`/api/activity/complete/${id}`, {}),
     addActivity: (body: AddActivityDto) =>
       requests.post<GetActivityDto>(`/api/activity`, body),
   },
+    updateActivity: (id: number, body: UpdateActivityDto) => requests.put<GetActivityDto>(`/api/activity/${id}`, body)
 };

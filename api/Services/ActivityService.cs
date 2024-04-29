@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.DTOs.Add;
 using api.DTOs.Get;
+using api.DTOs.Update;
 using api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -19,13 +20,15 @@ namespace api.Services
         Task<GetActivityDto> CompleteActivity(int id);
 
         Task<GetActivityDto> AddActivity(AddActivityDto activity);
+
+        Task<GetActivityDto> UpdateActivity(int id, UpdateActivityDto activity);
     }
     public class ActivityService : IActivityService
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public ActivityService(IMapper mapper,DataContext context)
+        public ActivityService(IMapper mapper, DataContext context)
         {
             _context = context;
             _mapper = mapper;
@@ -44,7 +47,7 @@ namespace api.Services
                 activity.Status = Status.Complete;
                 await _context.SaveChangesAsync();
             }
-                return _mapper.Map<GetActivityDto>(activity);
+            return _mapper.Map<GetActivityDto>(activity);
         }
 
         public async Task<GetActivityDto> AddActivity(AddActivityDto activity)
@@ -63,6 +66,25 @@ namespace api.Services
 
             // Map the new activity to GetActivityDto using AutoMapper and return it
             return _mapper.Map<GetActivityDto>(newActivity);
+        }
+
+        public async Task<GetActivityDto> UpdateActivity(int id, UpdateActivityDto activity)
+        {
+            // Retrieve the activity from the database
+            var dbActivity = await _context.Activities.FindAsync(id);
+
+            if (dbActivity != null)
+            {
+                // Update the activity's fields
+                dbActivity.Title = activity.Title;
+                dbActivity.Description = activity.Description;
+            }
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            // Map the updated activity to GetActivityDto and return it
+            return _mapper.Map<GetActivityDto>(dbActivity);
         }
 
     }

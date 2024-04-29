@@ -15,7 +15,7 @@ const ToDoList = () => {
     async (id) => {
       try {
         // Make API call to mark activity as complete
-        await AxiosServices.Activity.putActivityComplete(id);
+        await AxiosServices.Activity.updateActivityComplete(id);
 
         // Update the data after completion
         mutate();

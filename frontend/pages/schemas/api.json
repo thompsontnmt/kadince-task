@@ -171,7 +171,8 @@
             "required": true,
             "style": "simple",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -179,17 +180,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/UpdateActivityDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/UpdateActivityDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/UpdateActivityDto"
               }
             }
           }
@@ -286,6 +287,24 @@
           "Pending",
           "Complete"
         ]
+      },
+      "UpdateActivityDto": {
+        "required": [
+          "description",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
       }
     }
   }

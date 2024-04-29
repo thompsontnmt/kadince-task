@@ -14,5 +14,6 @@ export type { Activity } from './models/Activity';
 export type { AddActivityDto } from './models/AddActivityDto';
 export type { GetActivityDto } from './models/GetActivityDto';
 export { Status } from './models/Status';
+export type { UpdateActivityDto } from './models/UpdateActivityDto';
 
 export { ActivityService } from './services/ActivityService';

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.DTOs.Add;
 using api.DTOs.Get;
+using api.DTOs.Update;
 using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -47,19 +48,14 @@ namespace api.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult> UpdateActivity(Activity updatedActivity)
+        public async Task<ActionResult> UpdateActivity(int id, UpdateActivityDto activity)
         {
-            var dbActivity = await _context.Activities.FindAsync(updatedActivity.Id);
-            if (dbActivity is null)
-            return NotFound("Activity not found");
-
-            dbActivity.Title = updatedActivity.Title;
-            dbActivity.Description = updatedActivity.Description;
-            dbActivity.Status = updatedActivity.Status;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Activities.ToListAsync());
+            var updatedActivity = await _activityService.UpdateActivity(id, activity);
+            if (updatedActivity == null)
+            {
+                return NotFound("Activity not found");
+            }
+            return Ok(updatedActivity);
         }
 
         [HttpDelete]
