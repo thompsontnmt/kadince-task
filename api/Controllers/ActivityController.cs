@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.Add;
 using api.DTOs.Get;
 using api.Models;
 using api.Services;
@@ -38,13 +39,10 @@ namespace api.Controllers
         }
 
         [HttpPost]
-
-        public async Task<ActionResult<List<Activity>>> AddActivity(Activity activity)
+        public async Task<ActionResult<GetActivityDto>> AddActivity(AddActivityDto activity)
         {
-            _context.Activities.Add(activity);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Activities.ToListAsync());
+            var addedActivity = await _activityService.AddActivity(activity);
+            return Ok(addedActivity);
         }
 
         [HttpPut("{id}")]

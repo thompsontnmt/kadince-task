@@ -41,17 +41,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/AddActivityDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/AddActivityDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Activity"
+                "$ref": "#/components/schemas/AddActivityDto"
               }
             }
           }
@@ -62,26 +62,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Activity"
-                  }
+                  "$ref": "#/components/schemas/GetActivityDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Activity"
-                  }
+                  "$ref": "#/components/schemas/GetActivityDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Activity"
-                  }
+                  "$ref": "#/components/schemas/GetActivityDto"
                 }
               }
             }
@@ -214,6 +205,10 @@
   "components": {
     "schemas": {
       "Activity": {
+        "required": [
+          "description",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -223,14 +218,12 @@
           "title": {
             "maxLength": 100,
             "minLength": 0,
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
             "maxLength": 500,
             "minLength": 0,
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "status": {
             "$ref": "#/components/schemas/Status"
@@ -238,7 +231,30 @@
         },
         "additionalProperties": false
       },
+      "AddActivityDto": {
+        "required": [
+          "description",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "GetActivityDto": {
+        "required": [
+          "description",
+          "status",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -246,12 +262,12 @@
             "format": "int32"
           },
           "title": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "status": {
             "$ref": "#/components/schemas/Status"
@@ -266,7 +282,7 @@
         ],
         "type": "integer",
         "format": "int32",
-         "x-enum-varnames": [
+        "x-enum-varnames": [
           "Pending",
           "Complete"
         ]

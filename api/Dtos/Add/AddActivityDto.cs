@@ -1,20 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Models
+namespace api.DTOs.Add
 {
-    public class Activity
+    public class AddActivityDto
     {
-        public int Id { get; set; }
-
         [Required]
-        [StringLength(100)]
         public string Title { get; set; } = "";
 
         [Required]
-        [StringLength(500)]
         public string Description { get; set; } = "";
-
-        public Status Status { get; set; }
-
     }
 }

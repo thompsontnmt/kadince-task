@@ -2,11 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Status } from './Status';
-export type Activity = {
-    id?: number;
+export type AddActivityDto = {
     title: string;
     description: string;
-    status?: Status;
 };
 

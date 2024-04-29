@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Activity } from '../models/Activity';
+import type { AddActivityDto } from '../models/AddActivityDto';
 import type { GetActivityDto } from '../models/GetActivityDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -20,12 +21,12 @@ export class ActivityService {
     }
     /**
      * @param requestBody
-     * @returns Activity Success
+     * @returns GetActivityDto Success
      * @throws ApiError
      */
     public postActivity(
-        requestBody?: Activity,
-    ): CancelablePromise<Array<Activity>> {
+        requestBody?: AddActivityDto,
+    ): CancelablePromise<GetActivityDto> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/Activity',

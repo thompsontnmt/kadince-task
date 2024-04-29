@@ -1,11 +1,13 @@
-import React, { useCallback } from "react";
-import { Button, Card, Stack, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { useActivities } from "../../src/hooks/useActivities";
 import { Status } from "../../generated/api/models/Status";
 import { AxiosServices } from "../../src/axios/axiosServices";
 
 const ToDoList = () => {
   const { data: activities, mutate } = useActivities();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const getStatusLabel = (status) => {
     return Status[status] || "Unknown";
   };
@@ -23,6 +25,25 @@ const ToDoList = () => {
     },
     [mutate]
   );
+
+  const handleAddActivity = async () => {
+    try {
+      // Make API call to add activity
+      await AxiosServices.Activity.addActivity({
+        title: title,
+        description: description,
+      });
+
+      // Reset the form fields
+      setTitle("");
+      setDescription("");
+
+      // Update the data after adding activity
+      mutate();
+    } catch (error) {
+      console.error("Error adding activity:", error);
+    }
+  };
 
   return (
     <>
@@ -53,6 +74,23 @@ const ToDoList = () => {
             )}
           </Card>
         ))}
+      </Stack>
+      <Stack direction={"column"} gap={2}>
+        <TextField
+          label="Title"
+          variant="outlined"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <TextField
+          label="Description"
+          variant="outlined"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <Button variant="contained" onClick={handleAddActivity}>
+          Add Activity
+        </Button>
       </Stack>
     </>
   );

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.Add;
 using api.DTOs.Get;
 using api.Models;
 using AutoMapper;
@@ -16,6 +17,8 @@ namespace api.Services
         Task<List<GetActivityDto>> GetActivities();
 
         Task<GetActivityDto> CompleteActivity(int id);
+
+        Task<GetActivityDto> AddActivity(AddActivityDto activity);
     }
     public class ActivityService : IActivityService
     {
@@ -43,5 +46,24 @@ namespace api.Services
             }
                 return _mapper.Map<GetActivityDto>(activity);
         }
+
+        public async Task<GetActivityDto> AddActivity(AddActivityDto activity)
+        {
+            // Create a new Activity entity
+            var newActivity = new Activity
+            {
+                Title = activity.Title,
+                Description = activity.Description,
+                Status = Status.Pending
+            };
+
+            // Add the new activity to the context and save changes
+            _context.Activities.Add(newActivity);
+            await _context.SaveChangesAsync();
+
+            // Map the new activity to GetActivityDto using AutoMapper and return it
+            return _mapper.Map<GetActivityDto>(newActivity);
+        }
+
     }
 }

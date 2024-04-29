@@ -5,8 +5,8 @@
 import type { Status } from './Status';
 export type GetActivityDto = {
     id?: number;
-    title?: string | null;
-    description?: string | null;
-    status?: Status;
+    title: string;
+    description: string;
+    status: Status;
 };
 
