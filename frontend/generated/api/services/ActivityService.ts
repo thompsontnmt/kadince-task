@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Activity } from '../models/Activity';
 import type { AddActivityDto } from '../models/AddActivityDto';
 import type { GetActivityDto } from '../models/GetActivityDto';
 import type { UpdateActivityDto } from '../models/UpdateActivityDto';
@@ -37,22 +36,6 @@ export class ActivityService {
     }
     /**
      * @param id
-     * @returns Activity Success
-     * @throws ApiError
-     */
-    public deleteActivity(
-        id?: number,
-    ): CancelablePromise<Activity> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/Activity',
-            query: {
-                'id': id,
-            },
-        });
-    }
-    /**
-     * @param id
      * @returns GetActivityDto Success
      * @throws ApiError
      */
@@ -70,13 +53,13 @@ export class ActivityService {
     /**
      * @param id
      * @param requestBody
-     * @returns any Success
+     * @returns GetActivityDto Success
      * @throws ApiError
      */
     public putActivity(
         id: number,
         requestBody?: UpdateActivityDto,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<GetActivityDto> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/Activity/{id}',
@@ -85,6 +68,22 @@ export class ActivityService {
             },
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param id
+     * @returns any Success
+     * @throws ApiError
+     */
+    public deleteActivity(
+        id: number,
+    ): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/Activity/{id}',
+            path: {
+                'id': id,
+            },
         });
     }
 }

@@ -10,7 +10,6 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { Activity } from './models/Activity';
 export type { AddActivityDto } from './models/AddActivityDto';
 export type { GetActivityDto } from './models/GetActivityDto';
 export { Status } from './models/Status';

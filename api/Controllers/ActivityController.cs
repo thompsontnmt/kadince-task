@@ -48,7 +48,7 @@ namespace api.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult> UpdateActivity(int id, UpdateActivityDto activity)
+        public async Task<ActionResult<GetActivityDto>> UpdateActivity(int id, UpdateActivityDto activity)
         {
             var updatedActivity = await _activityService.UpdateActivity(id, activity);
             if (updatedActivity == null)
@@ -58,17 +58,11 @@ namespace api.Controllers
             return Ok(updatedActivity);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Activity>> DeleteActivity(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteActivity(int id)
         {
-            var dbActivity = await _context.Activities.FindAsync(id);
-            if (dbActivity is null)
-                return NotFound("Activity not found");
-
-            _context.Activities.Remove(dbActivity);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Activities.ToListAsync());
+            await _activityService.DeleteActivity(id);
+            return Ok();
         }
     }
 }

@@ -9,6 +9,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "PUT") {
     const response = await apiClient.activity.putActivity(id, req.body);
     return res.status(200).json(response);
+  } else if (req.method === "DELETE") {
+    const response = await apiClient.activity.deleteActivity(id);
+    return res.status(200).json(response);
   }
 };
 export default handler;

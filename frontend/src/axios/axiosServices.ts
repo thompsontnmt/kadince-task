@@ -8,6 +8,7 @@ export const AxiosServices = {
       requests.put<GetActivityDto>(`/api/activity/complete/${id}`, {}),
     addActivity: (body: AddActivityDto) =>
       requests.post<GetActivityDto>(`/api/activity`, body),
+    updateActivity: (id: number, body: UpdateActivityDto) => requests.put<GetActivityDto>(`/api/activity/${id}`, body),
+    deleteActivity: (id: number) => requests.del<any>(`/api/activity/${id}`)
   },
-    updateActivity: (id: number, body: UpdateActivityDto) => requests.put<GetActivityDto>(`/api/activity/${id}`, body)
-};
+  };

@@ -45,6 +45,18 @@ const ToDoList = () => {
     }
   };
 
+  const handleDeleteActivity = async (id) => {
+    try {
+      // Make API call to delete activity
+      await AxiosServices.Activity.deleteActivity(id);
+
+      // Update the data after deleting activity
+      mutate();
+    } catch (error) {
+      console.error("Error deleting activity:", error);
+    }
+  };
+
   return (
     <>
       <Typography variant="body1">To Do List</Typography>
@@ -54,7 +66,7 @@ const ToDoList = () => {
             key={id}
             sx={{
               width: "200px",
-              height: "150px",
+              height: "200px",
               p: 2,
               alignItems: "center",
             }}
@@ -65,12 +77,21 @@ const ToDoList = () => {
               {getStatusLabel(activity.status)}
             </Typography>
             {activity.status !== Status.Complete && (
-              <Button
-                variant="contained"
-                onClick={() => handleCompleteActivity(activity.id)}
-              >
-                Complete
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  onClick={() => handleCompleteActivity(activity.id)}
+                >
+                  Complete
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleDeleteActivity(activity.id)}
+                >
+                  Delete
+                </Button>
+              </>
             )}
           </Card>
         ))}

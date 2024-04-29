@@ -22,6 +22,8 @@ namespace api.Services
         Task<GetActivityDto> AddActivity(AddActivityDto activity);
 
         Task<GetActivityDto> UpdateActivity(int id, UpdateActivityDto activity);
+
+        Task DeleteActivity(int id);
     }
     public class ActivityService : IActivityService
     {
@@ -85,6 +87,15 @@ namespace api.Services
 
             // Map the updated activity to GetActivityDto and return it
             return _mapper.Map<GetActivityDto>(dbActivity);
+        }
+
+        public async Task DeleteActivity(int id)
+        {
+            var activity = await _context.Activities.FindAsync(id);
+            if (activity != null) {
+            _context.Activities.Remove(activity);
+            await _context.SaveChangesAsync();
+            }
         }
 
     }
