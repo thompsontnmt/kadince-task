@@ -3,6 +3,9 @@ import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { useActivities } from "../../src/hooks/useActivities";
 import { Status } from "../../generated/api/models/Status";
 import { AxiosServices } from "../../src/axios/axiosServices";
+import List from "../../src/content/ToDoList/List";
+import { MainBox } from "../../src/components/GlobalComponents";
+import Header from "../../src/content/ToDoList/Header";
 
 const ToDoList = () => {
   const { data: activities, mutate } = useActivities();
@@ -26,94 +29,11 @@ const ToDoList = () => {
     [mutate]
   );
 
-  const handleAddActivity = async () => {
-    try {
-      // Make API call to add activity
-      await AxiosServices.Activity.addActivity({
-        title: title,
-        description: description,
-      });
-
-      // Reset the form fields
-      setTitle("");
-      setDescription("");
-
-      // Update the data after adding activity
-      mutate();
-    } catch (error) {
-      console.error("Error adding activity:", error);
-    }
-  };
-
-  const handleDeleteActivity = async (id) => {
-    try {
-      // Make API call to delete activity
-      await AxiosServices.Activity.deleteActivity(id);
-
-      // Update the data after deleting activity
-      mutate();
-    } catch (error) {
-      console.error("Error deleting activity:", error);
-    }
-  };
-
   return (
-    <>
-      <Typography variant="body1">To Do List</Typography>
-      <Stack direction={"row"} gap={3} flexWrap={"wrap"}>
-        {activities?.map((activity, id) => (
-          <Card
-            key={id}
-            sx={{
-              width: "200px",
-              height: "200px",
-              p: 2,
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h5">{activity.title}</Typography>
-            <Typography variant="body1">{activity.description}</Typography>
-            <Typography variant="body1">
-              {getStatusLabel(activity.status)}
-            </Typography>
-            {activity.status !== Status.Complete && (
-              <>
-                <Button
-                  variant="contained"
-                  onClick={() => handleCompleteActivity(activity.id)}
-                >
-                  Complete
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleDeleteActivity(activity.id)}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
-          </Card>
-        ))}
-      </Stack>
-      <Stack direction={"column"} gap={2}>
-        <TextField
-          label="Title"
-          variant="outlined"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          label="Description"
-          variant="outlined"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Button variant="contained" onClick={handleAddActivity}>
-          Add Activity
-        </Button>
-      </Stack>
-    </>
+    <MainBox>
+      <Header />
+      <List />
+    </MainBox>
   );
 };
 
