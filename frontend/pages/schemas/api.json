@@ -208,16 +208,11 @@
     "schemas": {
       "AddActivityDto": {
         "required": [
-          "description",
           "title"
         ],
         "type": "object",
         "properties": {
           "title": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "description": {
             "minLength": 1,
             "type": "string"
           }
@@ -226,8 +221,7 @@
       },
       "GetActivityDto": {
         "required": [
-          "description",
-          "status",
+          "createdOn",
           "title"
         ],
         "type": "object",
@@ -240,40 +234,23 @@
             "minLength": 1,
             "type": "string"
           },
-          "description": {
-            "minLength": 1,
-            "type": "string"
+          "isComplete": {
+            "type": "boolean"
           },
-          "status": {
-            "$ref": "#/components/schemas/Status"
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
       },
-      "Status": {
-        "enum": [
-          0,
-          1
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Pending",
-          "Complete"
-        ]
-      },
       "UpdateActivityDto": {
         "required": [
-          "description",
           "title"
         ],
         "type": "object",
         "properties": {
           "title": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "description": {
             "minLength": 1,
             "type": "string"
           }

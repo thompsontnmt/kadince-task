@@ -7,14 +7,12 @@ namespace api.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
         public string Title { get; set; } = "";
 
+        public bool IsComplete { get; set; } = false;
+
         [Required]
-        [StringLength(500)]
-        public string Description { get; set; } = "";
-
-        public Status Status { get; set; }
-
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }

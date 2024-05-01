@@ -10,10 +10,9 @@ namespace api.DTOs.Get
         [Required]
         public string Title { get; set; } = "";
 
-        [Required]
-        public string Description { get; set; } = "";
+       public bool IsComplete { get; set; } = false;
 
         [Required]
-        public Status Status { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }

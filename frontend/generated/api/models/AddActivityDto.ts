@@ -4,6 +4,5 @@
 /* eslint-disable */
 export type AddActivityDto = {
     title: string;
-    description: string;
 };
 

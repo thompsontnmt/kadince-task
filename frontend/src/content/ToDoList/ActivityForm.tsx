@@ -1,91 +1,86 @@
 import React from 'react';
-import { useActivities } from '../../hooks/useActivities';
-import { AddActivityDto } from '../../../generated/api';
-import { AxiosServices } from '../../axios/axiosServices';
 import { Formik, Form, Field } from 'formik';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import * as Yup from 'yup';
+import {  AddActivityDto, UpdateActivityDto } from '../../../generated/api';
+import { AxiosServices } from '../../axios/axiosServices';
+import { useActivities } from '../../hooks/useActivities';
+
+const ActivitySchema = Yup.object().shape({
+    title: Yup.string().required('Title is required').min(2, 'Title must be more than 2 characters').max(50, 'Title must be less than 50 characters')
+});
 
 interface Props {
-  handleClose: () => void;
+  handleClose: () => any;
+  initialValues?: AddActivityDto | UpdateActivityDto;
+  activityId?: number;
+
 }
 
-const ActivityForm = ({handleClose}: Props) => {
-  const { mutate } = useActivities();
-  const ActivitySchema = Yup.object().shape({
-    title: Yup.string()
-      .required('Title is required')
-      .min(2, 'Title must be at least 2 characters long'),
-    description: Yup.string()
-      .required('Description is required')
-      .min(10, 'Description must be at least 10 characters long')
-  });
-  return (
-    <Box p={3}>
-      <Formik
-        initialValues={{
-          title: '',
-          description: ''
-        }}
-       validationSchema={ActivitySchema}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
-          try {
+const ActivityForm = ({ handleClose, initialValues, activityId }: Props) => {
+    const {mutate} = useActivities();
+    const handleSubmit = async (values, { setSubmitting }) => {
+        setSubmitting(true);
+        try {
+          if (activityId) {
+            // Update existing activity
+            const body: UpdateActivityDto = {
+                title: values.title,
+            }
+            await AxiosServices.Activity.updateActivity(activityId, body);
+          } else {
+            // Add new activity
             const body: AddActivityDto = {
-              title: values.title,
-              description: values.description
-            };
+                title: values.title
+            }
             await AxiosServices.Activity.addActivity(body);
-            mutate();
-            handleClose();
-          } catch (error) {
-            console.error("Error adding activity:", error);
           }
+          handleClose();
+          mutate();
+        } catch (error) {
+          console.error("Error saving activity:", error);
+        } finally {
           setSubmitting(false);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Field as={TextField}
-              name="title"
-              label="Title"
-              fullWidth
-              variant="outlined"
-              value={values.title}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.title && Boolean(errors.title)}
-              helperText={touched.title && errors.title}
-            />
-            <Field as={TextField}
-              name="description"
-              label="Description"
-              fullWidth
-              multiline
-              rows={4}
-              variant="outlined"
-              value={values.description}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.description && Boolean(errors.description)}
-              helperText={touched.description && errors.description}
-            />
-            <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
-              Add Activity
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Box>
-  );
-}
+        }
+      };
+    return (
+        <Formik
+            initialValues={initialValues || { title: '' }}
+            validationSchema={ActivitySchema}
+            onSubmit={handleSubmit}
+        >
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, dirty, isSubmitting }) => (
+                <Form onSubmit={handleSubmit}>
+                    <Stack direction={'row'} gap={2} py={2}
+                    alignItems={'center'}
+                    >
+                        <Field as={TextField}
+                            name="title"
+                            label="Title"
+                            fullWidth
+                            variant="outlined"
+                            autoFocus
+                            value={values.title}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={touched.title && Boolean(errors.title)}
+                            helperText={touched.title && errors.title}
+                            sx={{ height: activityId ? '50px' : '40px'}}
+
+                        />
+                        <Stack direction={'row'} gap={1} pt={1}>
+                          <Button type="submit" color="info" variant="contained" disabled={!isValid || !dirty || isSubmitting}>
+                              Save
+                          </Button>
+                          <Button onClick={handleClose} variant='outlined' color="secondary" >
+                              Cancel
+                          </Button>
+                        </Stack>
+                    </Stack>
+                </Form>
+            )}
+        </Formik>
+    );
+};
 
 export default ActivityForm;

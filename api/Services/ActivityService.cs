@@ -46,7 +46,7 @@ namespace api.Services
             var activity = await _context.Activities.FindAsync(id);
             if (activity != null)
             {
-                activity.Status = Status.Complete;
+                activity.IsComplete = true;
                 await _context.SaveChangesAsync();
             }
             return _mapper.Map<GetActivityDto>(activity);
@@ -58,8 +58,7 @@ namespace api.Services
             var newActivity = new Activity
             {
                 Title = activity.Title,
-                Description = activity.Description,
-                Status = Status.Pending
+                IsComplete = false
             };
 
             // Add the new activity to the context and save changes
@@ -79,7 +78,6 @@ namespace api.Services
             {
                 // Update the activity's fields
                 dbActivity.Title = activity.Title;
-                dbActivity.Description = activity.Description;
             }
 
             // Save changes to the database
