@@ -7,9 +7,12 @@ import ActivityForm from "./ActivityForm";
 import If from "../../components/If";
 import { useActivity } from "../../context/ActivityContext";
 import ListSkeleton from "./ListSkeleton";
+import { showToastMessage } from "../../utils/showToastMessage";
+import { useToast } from "../../hooks/useToast";
 
 const List = () => {
   const theme = useTheme();
+  const {toast, toastSuccess} = useToast();
   const { filter, showForm, setShowForm } = useActivity();
   console.log(filter);
   const { data: activities, mutate, isLoading } = useActivities(filter);
@@ -21,25 +24,17 @@ const List = () => {
       // Update the data after deleting activity
       mutate();
     } catch (error) {
-      console.error("Error deleting activity:", error);
+      showToastMessage(error, toast, 'Unable to delete item')
     }
   };
 
   const handleCompleteActivity = async (id) => {
     try {
       await AxiosServices.Activity.updateActivityComplete(id);
+      toastSuccess('Activity complete!')
       mutate();
     } catch (error) {
-      console.error("Error completing activity:", error);
-    }
-  };
-
-  const handleUpdateActivity = async (id, body) => {
-    try {
-      await AxiosServices.Activity.updateActivity(id, body);
-      mutate();
-    } catch (error) {
-      console.error("Error updating activity:", error);
+      showToastMessage(error, toast, 'Unable to update item to Complete')
     }
   };
 
@@ -81,7 +76,6 @@ const List = () => {
                   activity={activity}
                   onDelete={handleDeleteActivity}
                   onComplete={handleCompleteActivity}
-                  onUpdate={handleUpdateActivity}
                 />
               ))}
             </>

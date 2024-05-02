@@ -13,7 +13,7 @@ import { formatDate } from "../../utils/formatters";
 import ActivityForm from "./ActivityForm";
 import If from "../../components/If";
 
-const ListItem = ({ activity, onDelete, onComplete, onUpdate }) => {
+const ListItem = ({ activity, onDelete, onComplete }) => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
 

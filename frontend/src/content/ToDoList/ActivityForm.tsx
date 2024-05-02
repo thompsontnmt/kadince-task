@@ -6,6 +6,8 @@ import {  AddActivityDto, UpdateActivityDto } from '../../../generated/api';
 import { AxiosServices } from '../../axios/axiosServices';
 import { useActivities } from '../../hooks/useActivities';
 import { useActivity } from '../../context/ActivityContext';
+import { showToastMessage } from '../../utils/showToastMessage';
+import { useToast } from '../../hooks/useToast';
 
 const ActivitySchema = Yup.object().shape({
     title: Yup.string().required('Title is required').min(2, 'Title must be more than 2 characters').max(50, 'Title must be less than 50 characters')
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const ActivityForm = ({ handleClose, initialValues, activityId }: Props) => {
+  const {toast} = useToast();
   const {filter} = useActivity();
     const {mutate} = useActivities(filter);
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -40,7 +43,7 @@ const ActivityForm = ({ handleClose, initialValues, activityId }: Props) => {
           handleClose();
           mutate();
         } catch (error) {
-          console.error("Error saving activity:", error);
+          showToastMessage(error, toast, activityId ? 'Unable to update item' : 'Unable to add item')
         } finally {
           setSubmitting(false);
         }
