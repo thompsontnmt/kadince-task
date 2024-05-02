@@ -27,9 +27,9 @@ namespace api.Controllers
         }
 
        [HttpGet]
-        public async Task<ActionResult<List<GetActivityDto>>> GetActivities([FromQuery] bool? isCompleted)
+        public async Task<ActionResult<List<GetActivityDto>>> GetActivities([FromQuery] bool? isComplete)
         {
-            var activities = await _activityService.GetActivities(isCompleted);
+            var activities = await _activityService.GetActivities(isComplete);
             return Ok(activities);
         }
 

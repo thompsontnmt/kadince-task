@@ -15,7 +15,7 @@ namespace api.Services
 {
     public interface IActivityService
     {
-        Task<List<GetActivityDto>> GetActivities(bool? isCompleted = null);
+        Task<List<GetActivityDto>> GetActivities(bool? isComplete = null);
 
         Task<GetActivityDto> CompleteActivity(int id);
 
@@ -35,13 +35,13 @@ namespace api.Services
             _context = context;
             _mapper = mapper;
         }
-       public async Task<List<GetActivityDto>> GetActivities(bool? isCompleted = null)
+       public async Task<List<GetActivityDto>> GetActivities(bool? isComplete = null)
         {
             IQueryable<Activity> query = _context.Activities;
 
-            if (isCompleted.HasValue)
+            if (isComplete.HasValue)
             {
-                query = query.Where(a => a.IsComplete == isCompleted.Value);
+                query = query.Where(a => a.IsComplete == isComplete.Value);
             }
 
             var activities = await query.ToListAsync();

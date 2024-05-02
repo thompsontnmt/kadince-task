@@ -10,23 +10,42 @@
         "tags": [
           "Activity"
         ],
+        "parameters": [
+          {
+            "name": "isComplete",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetActivityDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetActivityDto"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetActivityDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetActivityDto"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetActivityDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetActivityDto"
+                  }
                 }
               }
             }

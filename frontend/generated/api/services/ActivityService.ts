@@ -10,13 +10,19 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ActivityService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
+     * @param isComplete
      * @returns GetActivityDto Success
      * @throws ApiError
      */
-    public getActivity(): CancelablePromise<GetActivityDto> {
+    public getActivity(
+        isComplete?: boolean,
+    ): CancelablePromise<Array<GetActivityDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/Activity',
+            query: {
+                'isComplete': isComplete,
+            },
         });
     }
     /**

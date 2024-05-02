@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import {  AddActivityDto, UpdateActivityDto } from '../../../generated/api';
 import { AxiosServices } from '../../axios/axiosServices';
 import { useActivities } from '../../hooks/useActivities';
+import { useActivity } from '../../context/ActivityContext';
 
 const ActivitySchema = Yup.object().shape({
     title: Yup.string().required('Title is required').min(2, 'Title must be more than 2 characters').max(50, 'Title must be less than 50 characters')
@@ -18,7 +19,8 @@ interface Props {
 }
 
 const ActivityForm = ({ handleClose, initialValues, activityId }: Props) => {
-    const {mutate} = useActivities();
+  const {filter} = useActivity();
+    const {mutate} = useActivities(filter);
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         try {

@@ -1,17 +1,18 @@
-import { CancelTwoTone, CheckCircleTwoTone, EditTwoTone } from '@mui/icons-material';
-import { Box, Button, Card, Checkbox, IconButton, Stack, Typography, useTheme } from '@mui/material';
-import React, { useCallback } from 'react';
-import { useActivities } from '../../hooks/useActivities';
-import { AxiosServices } from '../../axios/axiosServices';
-import { formatDate } from '../../utils/formatters';
-import ListItem from './ListItem';
-import ActivityForm from './ActivityForm';
-import { UpdateActivityDto } from '../../../generated/api';
-import If from '../../components/If';
+import { Box, Card, Stack, Typography, useTheme } from "@mui/material";
+import React, { useCallback } from "react";
+import { useActivities } from "../../hooks/useActivities";
+import { AxiosServices } from "../../axios/axiosServices";
+import ListItem from "./ListItem";
+import ActivityForm from "./ActivityForm";
+import If from "../../components/If";
+import { useActivity } from "../../context/ActivityContext";
+import ListSkeleton from "./ListSkeleton";
 
-const List = ({ showForm, setShowForm }) => {
+const List = () => {
   const theme = useTheme();
-  const { data: activities, mutate, isLoading } = useActivities();
+  const { filter, showForm, setShowForm } = useActivity();
+  console.log(filter);
+  const { data: activities, mutate, isLoading } = useActivities(filter);
 
   const handleDeleteActivity = async (id) => {
     try {
@@ -24,17 +25,14 @@ const List = ({ showForm, setShowForm }) => {
     }
   };
 
-  const handleCompleteActivity = useCallback(
-    async (id) => {
-      try {
-        await AxiosServices.Activity.updateActivityComplete(id);
-        mutate();
-      } catch (error) {
-        console.error("Error completing activity:", error);
-      }
-    },
-    [mutate]
-  );
+  const handleCompleteActivity = async (id) => {
+    try {
+      await AxiosServices.Activity.updateActivityComplete(id);
+      mutate();
+    } catch (error) {
+      console.error("Error completing activity:", error);
+    }
+  };
 
   const handleUpdateActivity = async (id, body) => {
     try {
@@ -45,23 +43,39 @@ const List = ({ showForm, setShowForm }) => {
     }
   };
 
+  const sortedActivities = activities
+    ? activities.sort((a, b) => {
+        return (
+          new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+        );
+      })
+    : [];
+
   return (
-    <Card sx={{ p: 4, alignContent: 'center', backgroundColor: theme.palette.background.paper, maxHeight: '800px', overflowY: 'auto' }}>
+    <Card
+      sx={{
+        p: 4,
+        alignContent: "center",
+        backgroundColor: theme.palette.background.paper,
+        maxHeight: "800px",
+        overflowY: "auto",
+      }}
+    >
       <Stack gap={2}>
         <If
           condition={!!showForm}
           then={
-          <Box pb={2}>
-            <ActivityForm handleClose={() => setShowForm(false)} />
-          </Box>
-            }
+            <Box pb={2}>
+              <ActivityForm handleClose={() => setShowForm(false)} />
+            </Box>
+          }
         />
         <If
           condition={isLoading}
-          then={<Typography>Loading...</Typography>}
-          else={(
+          then={<ListSkeleton />}
+          else={
             <>
-              {activities && activities.map((activity) => (
+              {sortedActivities.map((activity) => (
                 <ListItem
                   key={activity.id}
                   activity={activity}
@@ -71,7 +85,7 @@ const List = ({ showForm, setShowForm }) => {
                 />
               ))}
             </>
-          )}
+          }
         />
       </Stack>
     </Card>
