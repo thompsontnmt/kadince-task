@@ -14,7 +14,6 @@ const List = () => {
   const theme = useTheme();
   const {toast, toastSuccess} = useToast();
   const { filter, showForm, setShowForm } = useActivity();
-  console.log(filter);
   const { data: activities, mutate, isLoading } = useActivities(filter);
 
   const handleDeleteActivity = async (id) => {

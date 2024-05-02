@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { CancelTwoTone, EditTwoTone } from "@mui/icons-material";
+import { CancelTwoTone, CheckCircleTwoTone, EditTwoTone, RadioButtonUnchecked } from "@mui/icons-material";
 import { formatDate } from "../../utils/formatters";
 import ActivityForm from "./ActivityForm";
 import If from "../../components/If";
@@ -54,6 +54,8 @@ const ListItem = ({ activity, onDelete, onComplete }) => {
                 }}
               >
                 <Checkbox
+                icon={<RadioButtonUnchecked />}
+                checkedIcon={<CheckCircleTwoTone />}
                   checked={activity.isComplete}
                   onChange={() => onComplete(activity.id)}
                   color="success"
