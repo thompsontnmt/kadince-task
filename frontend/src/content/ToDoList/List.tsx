@@ -12,7 +12,7 @@ import { useToast } from "../../hooks/useToast";
 
 const List = () => {
   const theme = useTheme();
-  const {toast, toastSuccess} = useToast();
+  const { toast, toastSuccess } = useToast();
   const { filter, showForm, setShowForm } = useActivity();
   const { data: activities, mutate, isLoading } = useActivities(filter);
 
@@ -23,17 +23,17 @@ const List = () => {
       // Update the data after deleting activity
       mutate();
     } catch (error) {
-      showToastMessage(error, toast, 'Unable to delete item')
+      showToastMessage(error, toast, "Unable to delete item");
     }
   };
 
   const handleCompleteActivity = async (id) => {
     try {
       await AxiosServices.Activity.updateActivityComplete(id);
-      toastSuccess('Activity complete!')
+      toastSuccess("Activity complete!");
       mutate();
     } catch (error) {
-      showToastMessage(error, toast, 'Unable to update item to Complete')
+      showToastMessage(error, toast, "Unable to update item to Complete");
     }
   };
 
@@ -55,6 +55,18 @@ const List = () => {
         overflowY: "auto",
       }}
     >
+       <If
+  condition={activities?.length === 0 && !showForm}
+  then={
+    <Box display="flex" justifyContent="center" alignItems="center">
+      <Typography variant="h6">
+      {!!filter ? "No activities completed" :
+         filter !== null && filter !== undefined ? "No activities pending" :
+         "Add a new activity!"}
+      </Typography>
+    </Box>
+  }
+/>
       <Stack gap={2}>
         <If
           condition={!!showForm}

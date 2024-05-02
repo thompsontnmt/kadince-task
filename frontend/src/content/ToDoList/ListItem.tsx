@@ -12,8 +12,15 @@ import { CancelTwoTone, CheckCircleTwoTone, EditTwoTone, RadioButtonUnchecked } 
 import { formatDate } from "../../utils/formatters";
 import ActivityForm from "./ActivityForm";
 import If from "../../components/If";
+import { GetActivityDto } from "../../../generated/api/models/GetActivityDto";
 
-const ListItem = ({ activity, onDelete, onComplete }) => {
+interface Props {
+  activity: GetActivityDto,
+  onDelete: (id: any) => Promise<void>
+  onComplete: (id: any) => Promise<void>
+}
+
+const ListItem = ({ activity, onDelete, onComplete }: Props) => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
 
