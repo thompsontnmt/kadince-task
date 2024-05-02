@@ -26,11 +26,11 @@ namespace api.Controllers
             _activityService = activityService;
         }
 
-        [HttpGet]
-
-        public async Task<ActionResult<GetActivityDto>> GetActivities()
+       [HttpGet]
+        public async Task<ActionResult<List<GetActivityDto>>> GetActivities([FromQuery] bool? isCompleted)
         {
-            return Ok(await _activityService.GetActivities());
+            var activities = await _activityService.GetActivities(isCompleted);
+            return Ok(activities);
         }
 
         [HttpPut("Complete/{id}")]
