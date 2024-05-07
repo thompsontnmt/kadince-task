@@ -10,7 +10,7 @@ import { showToastMessage } from '../../utils/showToastMessage';
 import { useToast } from '../../hooks/useToast';
 
 const ActivitySchema = Yup.object().shape({
-    title: Yup.string().required('Title is required').min(2, 'Title must be more than 2 characters').max(50, 'Title must be less than 50 characters')
+    title: Yup.string().required('Title is required').min(2, 'Title must be more than 1 character').max(50, 'Title must not exceee 50 characters')
 });
 
 interface Props {

@@ -19,6 +19,15 @@ const theme = createTheme({
             },
           },
         },
+        {
+          props: { color: "success" },
+          style: {
+            "&:disabled": {
+              opacity: 0.5,
+              color: "#2F7C31",
+            },
+          },
+        },
       ],
     },
     MuiButton: {

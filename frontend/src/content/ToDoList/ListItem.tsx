@@ -5,6 +5,7 @@ import {
   Checkbox,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -60,14 +61,18 @@ const ListItem = ({ activity, onDelete, onComplete }: Props) => {
                   gap: 4,
                 }}
               >
+              <Tooltip title={activity.isComplete ? 'Activity complete!' : 'Complete item'}>
+                <span>
                 <Checkbox
                 icon={<RadioButtonUnchecked />}
-                checkedIcon={<CheckCircleTwoTone />}
-                  checked={activity.isComplete}
-                  onChange={() => onComplete(activity.id)}
-                  color="success"
-                  inputProps={{ "aria-label": "Complete activity" }}
+                checkedIcon={<CheckCircleTwoTone color="success" />}
+                checked={activity.isComplete}
+                onChange={() => onComplete(activity.id)}
+                inputProps={{ "aria-label": "Complete activity" }}
+                disabled={activity.isComplete}
                 />
+                </span>
+                </Tooltip>
                 <Stack py={1}>
                   <Typography
                     sx={{
@@ -90,16 +95,22 @@ const ListItem = ({ activity, onDelete, onComplete }: Props) => {
                 </Stack>
               </Stack>
               <Stack direction="row" alignItems={"center"}>
+              <Tooltip title={activity.isComplete ? 'Cannot edit a completed item' : 'Edit item'}>
+                <span>
                 <IconButton
                   color="info"
                   onClick={handleToggleEdit}
                   disabled={!!activity.isComplete}
-                >
+                  >
                   <EditTwoTone />
                 </IconButton>
+                  </span>
+                </Tooltip>
+                <Tooltip title={'Delete item'}>
                 <IconButton onClick={() => onDelete(activity.id)}>
                   <CancelTwoTone color="error" />
                 </IconButton>
+                </Tooltip>
               </Stack>
             </>
           }
