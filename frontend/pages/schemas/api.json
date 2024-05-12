@@ -18,6 +18,15 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "default": "asc"
+            }
           }
         ],
         "responses": {
@@ -99,8 +108,8 @@
         }
       }
     },
-    "/Activity/Complete/{id}": {
-      "put": {
+    "/Activity/{id}": {
+      "get": {
         "tags": [
           "Activity"
         ],
@@ -138,9 +147,7 @@
             }
           }
         }
-      }
-    },
-    "/Activity/{id}": {
+      },
       "put": {
         "tags": [
           "Activity"
@@ -218,6 +225,88 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/Activity/Complete/{id}": {
+      "put": {
+        "tags": [
+          "Activity"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Activity/Uncomplete/{id}": {
+      "put": {
+        "tags": [
+          "Activity"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivityDto"
+                }
+              }
+            }
           }
         }
       }

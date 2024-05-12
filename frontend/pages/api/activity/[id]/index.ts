@@ -6,6 +6,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (isNaN(id)) {
     return res.status(400).json({ message: "Invalid activity id." });
   }
+  if (req.method === "GET") {
+    const response = await apiClient.activity.getActivity1(id);
+    return res.status(200).json(response);
+  }
   if (req.method === "PUT") {
     const response = await apiClient.activity.putActivity(id, req.body);
     return res.status(200).json(response);

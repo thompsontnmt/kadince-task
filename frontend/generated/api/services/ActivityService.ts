@@ -11,17 +11,20 @@ export class ActivityService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @param isComplete
+     * @param sortOrder
      * @returns GetActivityDto Success
      * @throws ApiError
      */
     public getActivity(
         isComplete?: boolean,
+        sortOrder: string = 'asc',
     ): CancelablePromise<Array<GetActivityDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/Activity',
             query: {
                 'isComplete': isComplete,
+                'sortOrder': sortOrder,
             },
         });
     }
@@ -45,12 +48,12 @@ export class ActivityService {
      * @returns GetActivityDto Success
      * @throws ApiError
      */
-    public putActivityComplete(
+    public getActivity1(
         id: number,
     ): CancelablePromise<GetActivityDto> {
         return this.httpRequest.request({
-            method: 'PUT',
-            url: '/Activity/Complete/{id}',
+            method: 'GET',
+            url: '/Activity/{id}',
             path: {
                 'id': id,
             },
@@ -87,6 +90,38 @@ export class ActivityService {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/Activity/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
+    /**
+     * @param id
+     * @returns GetActivityDto Success
+     * @throws ApiError
+     */
+    public putActivityComplete(
+        id: number,
+    ): CancelablePromise<GetActivityDto> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/Activity/Complete/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
+    /**
+     * @param id
+     * @returns GetActivityDto Success
+     * @throws ApiError
+     */
+    public putActivityUncomplete(
+        id: number,
+    ): CancelablePromise<GetActivityDto> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/Activity/Uncomplete/{id}',
             path: {
                 'id': id,
             },

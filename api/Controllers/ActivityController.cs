@@ -26,11 +26,25 @@ namespace api.Controllers
             _activityService = activityService;
         }
 
-       [HttpGet]
-        public async Task<ActionResult<List<GetActivityDto>>> GetActivities([FromQuery] bool? isComplete)
+        [HttpGet]
+        public async Task<ActionResult<List<GetActivityDto>>> GetActivities([FromQuery] bool? isComplete, [FromQuery] string sortOrder = "asc")
         {
-            var activities = await _activityService.GetActivities(isComplete);
+            var activities = await _activityService.GetActivities(isComplete, sortOrder);
             return Ok(activities);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetActivityDto>> GetActivityById(int id)
+        {
+            try
+            {
+                var activity = await _activityService.GetActivity(id);
+                return Ok(activity);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Activity with ID {id} not found.");
+            }
         }
 
         [HttpPut("Complete/{id}")]
@@ -63,6 +77,20 @@ namespace api.Controllers
         {
             await _activityService.DeleteActivity(id);
             return Ok();
+        }
+
+        [HttpPut("Uncomplete/{id}")]
+        public async Task<ActionResult<GetActivityDto>> UncompleteActivity(int id)
+        {
+            try
+            {
+                var activity = await _activityService.UncompleteActivity(id);
+                return Ok(activity);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Activity with ID {id} not found.");
+            }
         }
     }
 }

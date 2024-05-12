@@ -15,7 +15,9 @@ namespace api.Services
 {
     public interface IActivityService
     {
-        Task<List<GetActivityDto>> GetActivities(bool? isComplete = null);
+        Task<List<GetActivityDto>> GetActivities(bool? isComplete = null, string sortOrder = "asc");
+
+        Task<GetActivityDto> GetActivity(int id);
 
         Task<GetActivityDto> CompleteActivity(int id);
 
@@ -24,6 +26,9 @@ namespace api.Services
         Task<GetActivityDto> UpdateActivity(int id, UpdateActivityDto activity);
 
         Task DeleteActivity(int id);
+
+        Task<GetActivityDto> UncompleteActivity(int id);
+
     }
     public class ActivityService : IActivityService
     {
@@ -35,18 +40,37 @@ namespace api.Services
             _context = context;
             _mapper = mapper;
         }
-       public async Task<List<GetActivityDto>> GetActivities(bool? isComplete = null)
+      public async Task<List<GetActivityDto>> GetActivities(bool? isComplete = null, string sortOrder = "asc")
+    {
+        IQueryable<Activity> query = _context.Activities;
+
+        if (isComplete.HasValue)
         {
-            IQueryable<Activity> query = _context.Activities;
-
-            if (isComplete.HasValue)
-            {
-                query = query.Where(a => a.IsComplete == isComplete.Value);
-            }
-
-            var activities = await query.ToListAsync();
-            return _mapper.Map<List<GetActivityDto>>(activities);
+            query = query.Where(a => a.IsComplete == isComplete.Value);
         }
+
+        // Apply sorting
+        if (sortOrder.ToLower() == "desc")
+        {
+            query = query.OrderByDescending(a => a.CreatedOn);
+        }
+        else
+        {
+            query = query.OrderBy(a => a.CreatedOn);
+        }
+
+        var activities = await query.ToListAsync();
+        return _mapper.Map<List<GetActivityDto>>(activities);
+    }
+         public async Task<GetActivityDto> GetActivity(int id)
+    {
+        var activity = await _context.Activities.FindAsync(id);
+        if (activity == null)
+        {
+            throw new KeyNotFoundException("Activity not found");
+        }
+        return _mapper.Map<GetActivityDto>(activity);
+    }
 
         public async Task<GetActivityDto> CompleteActivity(int id)
         {
@@ -102,6 +126,19 @@ namespace api.Services
             await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<GetActivityDto> UncompleteActivity(int id)
+        {
+            var activity = await _context.Activities.FindAsync(id);
+            if (activity == null)
+            {
+                throw new KeyNotFoundException("Activity not found");
+            }
+            activity.IsComplete = false;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<GetActivityDto>(activity);
+        }
+
 
     }
 }

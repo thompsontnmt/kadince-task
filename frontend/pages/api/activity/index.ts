@@ -9,7 +9,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       '';
     }
-    const response = await apiClient.activity.getActivity(isComplete);
+    const sortOrder = typeof req.query.sortOrder === 'string' ? req.query.sortOrder : 'desc';
+
+    const response = await apiClient.activity.getActivity(isComplete, sortOrder);
     return res.status(200).json(response);
   } else if (req.method === "POST") {
     const response = await apiClient.activity.postActivity(req.body);

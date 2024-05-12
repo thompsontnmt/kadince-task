@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 /**
  * Formats a date and time string.
@@ -6,9 +6,15 @@ import { format } from 'date-fns';
  * @param {string} fmt - The format string.
  * @returns {string} - The formatted date string.
  */
-export const formatDate = (dateString, fmt = "PPpp") => {
+export const formatDate = (dateString, fmt = "PPp") => {
+  if (!dateString) return '';
   const date = new Date(dateString);
-  return format(date, "MM/dd/yyyy hh:mm aa");
+  if (!isValid(date)) {
+    console.error("Invalid date passed to formatDate:", dateString);
+    return '';
+  }
+
+  return format(date, fmt);
 }
 
 export const formatTitleCase = (input: string | undefined): string => {
